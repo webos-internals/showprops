@@ -1,0 +1,9 @@
+{
+	"id": "com.palm.org.webosinternals.showprops",
+	"version": "0.0.1",
+	"vendor": "webos-internals",
+	"type": "web",
+	"main": "index.html",
+	"title": "Show Properties",
+	"icon": "icon.png"
+}
