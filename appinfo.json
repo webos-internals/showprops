@@ -1,7 +1,7 @@
 {
 	"id": "com.palm.org.webosinternals.showprops",
-	"version": "0.0.1",
-	"vendor": "webos-internals",
+	"version": "0.1.0",
+	"vendor": "oil",
 	"type": "web",
 	"main": "index.html",
 	"title": "Show Properties",
