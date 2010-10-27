@@ -350,11 +350,48 @@ bool getTokens_method(LSHandle* lshandle, LSMessage *message, void *ctx) {
   return false;
 }
 
+//
+// Handler for the getPropertiesHandler service.
+//
+bool getProperties_handler(LSHandle* lshandle, LSMessage *reply, void *ctx) {
+  bool retVal;
+  LSError lserror;
+  LSErrorInit(&lserror);
+  LSMessage* message = (LSMessage*)ctx;
+  retVal = LSMessageRespond(message, LSMessageGetPayload(reply), &lserror);
+  LSMessageUnref(message);
+  if (!retVal) {
+    LSErrorPrint(&lserror, stderr);
+    LSErrorFree(&lserror);
+  }
+  return retVal;
+}
+
+//
+// Call the getPropertiesHandler service using liblunaservice and return the output to webOS.
+//
+bool getProperties_method(LSHandle* lshandle, LSMessage *message, void *ctx) {
+  bool retVal;
+  LSError lserror;
+  LSErrorInit(&lserror);
+  LSMessageRef(message);
+  const char *payload;
+  payload = LSMessageGetPayload(message);
+  retVal = LSCall(priv_serviceHandle, "palm://com.palm.preferences/systemProperties/Get",
+		  payload, getProperties_handler, message, NULL, &lserror);
+  if (!retVal) {
+    LSErrorPrint(&lserror, stderr);
+    LSErrorFree(&lserror);
+  }
+  return retVal;
+}
+
 LSMethod luna_methods[] = {
   { "status",		dummy_method },
   { "version",		version_method },
 
   { "getTokens",	getTokens_method },
+  { "getProperties",	getProperties_method },
 
   { 0, 0 }
 };
