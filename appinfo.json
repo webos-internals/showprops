@@ -1,9 +1,12 @@
 {
-	"id": "com.palm.org.webosinternals.showprops",
-	"version": "0.1.0",
-	"vendor": "oil",
+	"title": "Show Properties",
+	"id": "org.webosinternals.showprops",
+	"version": "0.2.0",
+	"release_date":	"27-October-2010",
+	"vendor": "WebOS Internals",
+	"vendor_email":	"support@webos-internals.org",
+	"vendor_url": "http://www.webos-internals.org/wiki/Application:Preware",
 	"type": "web",
 	"main": "index.html",
-	"title": "Show Properties",
 	"icon": "icon.png"
 }
