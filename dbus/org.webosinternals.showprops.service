@@ -1,3 +1,0 @@
-[D-BUS Service]
-Name=org.webosinternals.showprops
-Exec=/var/usr/sbin/org.webosinternals.showprops

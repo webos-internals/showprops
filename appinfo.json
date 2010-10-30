@@ -1,6 +1,6 @@
 {
 	"title": "Show Properties",
-	"id": "org.webosinternals.showprops",
+	"id": "com.palm.org.webosinternals.showprops",
 	"version": "0.2.0",
 	"release_date":	"27-October-2010",
 	"vendor": "WebOS Internals",
