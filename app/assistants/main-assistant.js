@@ -73,9 +73,9 @@ MainAssistant.prototype.dataRequest = function(obj)
 	{
 		this.controller.serviceRequest
 		(
-			'palm://org.webosinternals.showprops',
+			'palm://com.palm.preferences/systemProperties',
 			{
-				method: 'getProperties',
+				method: 'Get',
 				parameters:
 				{
 					'key': 'com.palm.properties.' + obj.name
