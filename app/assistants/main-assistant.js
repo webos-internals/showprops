@@ -1,64 +1,68 @@
 function MainAssistant()
 {
-	this.properties =
-	[
-		{name: 'ACCELCAL'},
-		{name: 'BATToCH'},
-		{name: 'BATToRSP'},
-		{name: 'BToADDR'},
-		{name: 'DMCARRIER'},
-		{name: 'DMCLoAUTHNAME'},
-		{name: 'DMCLoAUTHPW'},
-		{name: 'DMCLoNONCE'},
-		{name: 'DMMODEL'},
-		{name: 'DMSETS'},
-		{name: 'DMSVRoAUTHPW'},
-		{name: 'DMSVRoNONCE'},
-		{name: 'HWoRev'},
-		{name: 'KEYoBRD'},
-		{name: 'ModemSN'},
-		{name: 'PN'},
-		{name: 'PRODoID'},
-		{name: 'PalmSN'},
-		{name: 'ProdSN'},
-		{name: 'WIFIoADDR'},
-		{name: 'installer'}
-	];
+	this.props = $H({
+		ACCELCAL:		'',
+		BATToCH:		'',
+		BATToRSP:		'',
+		BToADDR:		'',
+		DMCARRIER:		'',
+		DMCLoAUTHNAME:	'',
+		DMCLoAUTHPW:	'',
+		DMCLoNONCE:		'',
+		DMMODEL:		'',
+		DMSETS:			'',
+		DMSVRoAUTHPW:	'',
+		DMSVRoNONCE:	'',
+		HWoRev:			'',
+		KEYoBRD:		'',
+		ModemSN:		'',
+		PN:				'',
+		PRODoID:		'',
+		PalmSN:			'',
+		ProdSN:			'',
+		WIFIoADDR:		'',
+		installer:		''
+	});
+	
+	this.menuModel =
+	{
+		visible: true,
+		items:
+		[
+			{
+				label: $L("Generate castle.xml"),
+				command: 'do-gen'
+			}
+		]
+	};
 }
 
 MainAssistant.prototype.setup = function()
 {
 	try 
 	{
-		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, { visible: false });
+		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 		
-		var html = '';
+		this.listContainer = this.controller.get('data');
+		
 		var dataTemplate = 'main/row-template';
+		this.listContainer.update('');
 		
-		for (var p = 0; p < this.properties.length; p++) 
-		{
+		this.props.each(function(pair) {
+			
 			var obj =
 			{
-				id: this.properties[p].name,
-				title: this.properties[p].name,
-				rowClass: (p==(this.properties.length-1)?'last':''),
+				id: pair.key,
+				title: pair.key,
+				/*rowClass: (p==(this.props.length-1)?'last':''),*/
 				data: '&nbsp;'
 			};
-			html += Mojo.View.render
-			(
-				{
-					object: obj,
-					template: dataTemplate
-				}
-			);
-		}
-		
-		this.controller.get('data').innerHTML = html;
-		
-		for (var p = 0; p < this.properties.length; p++) 
-		{
-			this.dataRequest(this.properties[p]);
-		}
+			
+			this.listContainer.insert({bottom: Mojo.View.render ({object: obj, template: dataTemplate})});
+			
+			this.dataRequest(pair.key);
+			
+		}, this);
 	}
 	catch (e)
 	{
@@ -67,7 +71,7 @@ MainAssistant.prototype.setup = function()
 	}
 }
 
-MainAssistant.prototype.dataRequest = function(obj)
+MainAssistant.prototype.dataRequest = function(name)
 {
 	try 
 	{
@@ -78,9 +82,9 @@ MainAssistant.prototype.dataRequest = function(obj)
 				method: 'Get',
 				parameters:
 				{
-					'key': 'com.palm.properties.' + obj.name
+					'key': 'com.palm.properties.' + name
 				},
-				onSuccess: this.dataResponse.bind(this, obj)
+				onSuccess: this.dataResponse.bind(this, name)
 			}
 		);
 	}
@@ -90,12 +94,17 @@ MainAssistant.prototype.dataRequest = function(obj)
 		this.message('main#dataRequest', e);
 	}
 }
-
-MainAssistant.prototype.dataResponse = function(obj, payload)
+MainAssistant.prototype.dataResponse = function(name, payload)
 {
 	try 
 	{
-		this.controller.get('data-' + obj.name).innerHTML = payload['com.palm.properties.' + obj.name];
+		var value = payload['com.palm.properties.' + name];
+		this.controller.get('data-' + name).innerHTML = value;
+		
+		var type = typeof value;
+		if (type == 'object') value = Object.toJSON(value);
+		
+		this.props.set(name, value);
 	}
 	catch (e)
 	{
@@ -103,6 +112,67 @@ MainAssistant.prototype.dataResponse = function(obj, payload)
 		this.message('main#dataResponse', e);
 	}
 }
+
+MainAssistant.prototype.handleCommand = function(event)
+{
+	if (event.type == Mojo.Event.command)
+	{
+		switch (event.command)
+		{
+			case 'do-gen':
+				this.controller.showAlertDialog(
+				{
+				    title:				$L("castle.xml"),
+					allowHTMLMessage:	true,
+				    message:			$L("What would you like to do?"),
+				    choices:			[
+											{label:$L("Copy To Clipboard"), value:'copy'},
+											{label:$L("Email"),				value:'email'}
+										],
+					onChoose:			this.xmlGenResponse.bindAsEventListener(this)
+			    });
+				
+				break;
+		}
+	}
+};
+MainAssistant.prototype.xmlGenResponse = function(value)
+{
+	var xml = '<Section name="tokens" type="token" size="4KB">';
+	
+	this.props.each(function(pair) {
+		
+		xml += '<Val name="'+pair.key+'" value="'+pair.value+'"/>';
+		
+	}, this);
+	
+	xml += '</Section>';
+	
+	
+	if (value == "copy")
+	{
+		this.controller.stageController.setClipboard(xml);
+	}
+	else if (value == "email")
+	{
+		this.controller.serviceRequest
+		(
+	    	"palm://com.palm.applicationManager",
+			{
+		        method: 'open',
+		        parameters:
+				{
+		            id: "com.palm.app.email",
+		            params:
+					{
+		                summary: "castle.xml",
+		                text: xml.escapeHTML()
+		            }
+		        }
+		    }
+		);
+	}
+};
 
 MainAssistant.prototype.message = function(title, message)
 {
