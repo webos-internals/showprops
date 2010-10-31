@@ -35,7 +35,7 @@ function MainAssistant()
 			}
 		]
 	};
-}
+};
 
 MainAssistant.prototype.setup = function()
 {
@@ -69,7 +69,7 @@ MainAssistant.prototype.setup = function()
 		Mojo.Log.logException(e, 'main#setup');
 		this.message('main#setup', e);
 	}
-}
+};
 
 MainAssistant.prototype.dataRequest = function(name)
 {
@@ -93,7 +93,7 @@ MainAssistant.prototype.dataRequest = function(name)
 		Mojo.Log.logException(e, 'main#dataRequest');
 		this.message('main#dataRequest', e);
 	}
-}
+};
 MainAssistant.prototype.dataResponse = function(name, payload)
 {
 	try 
@@ -111,7 +111,7 @@ MainAssistant.prototype.dataResponse = function(name, payload)
 		Mojo.Log.logException(e, 'main#dataResponse');
 		this.message('main#dataResponse', e);
 	}
-}
+};
 
 MainAssistant.prototype.handleCommand = function(event)
 {
@@ -193,8 +193,12 @@ MainAssistant.prototype.message = function(title, message)
 	    choices:			[{label:$L('Ok'), value:''}],
 		onChoose:			function(value){}
     });
-}
+};
 
 MainAssistant.prototype.activate = function(event) {}
 MainAssistant.prototype.deactivate = function(event) {}
 MainAssistant.prototype.cleanup = function(event) {}
+
+// Local Variables:
+// tab-width: 4
+// End:
