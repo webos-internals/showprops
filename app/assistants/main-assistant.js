@@ -1,7 +1,6 @@
 function MainAssistant()
 {
 	this.props = $H({
-		ACCELCAL:		'',
 		BATToCH:		'',
 		BATToRSP:		'',
 		BToADDR:		'',
@@ -13,6 +12,7 @@ function MainAssistant()
 		DMSETS:			'',
 		DMSVRoAUTHPW:	'',
 		DMSVRoNONCE:	'',
+		ACCELCAL:		'',
 		HWoRev:			'',
 		KEYoBRD:		'',
 		ModemSN:		'',
@@ -99,11 +99,10 @@ MainAssistant.prototype.dataResponse = function(name, payload)
 	try 
 	{
 		var value = payload['com.palm.properties.' + name];
-		this.controller.get('data-' + name).innerHTML = value;
-		
 		var type = typeof value;
 		if (type == 'object') value = Object.toJSON(value);
 		
+		this.controller.get('data-' + name).innerHTML = value;
 		this.props.set(name, value);
 	}
 	catch (e)
