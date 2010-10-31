@@ -1,27 +1,30 @@
 function MainAssistant()
 {
 	this.props = $H({
-		BATToCH:		'',
-		BATToRSP:		'',
-		BToADDR:		'',
-		DMCARRIER:		'',
-		DMCLoAUTHNAME:	'',
-		DMCLoAUTHPW:	'',
-		DMCLoNONCE:		'',
-		DMMODEL:		'',
-		DMSETS:			'',
-		DMSVRoAUTHPW:	'',
-		DMSVRoNONCE:	'',
-		ACCELCAL:		'',
-		HWoRev:			'',
-		KEYoBRD:		'',
-		ModemSN:		'',
-		PN:				'',
-		PRODoID:		'',
-		PalmSN:			'',
-		ProdSN:			'',
-		WIFIoADDR:		'',
-		installer:		''
+		BATToCH:		false,
+		BATToRSP:		false,
+		BToADDR:		false,
+		DMCARRIER:		false,
+		DMCLoAUTHNAME:	false,
+		DMCLoAUTHPW:	false,
+		DMCLoNONCE:		false,
+		DMMODEL:		false,
+		DMSETS:			false,
+		DMSVRoAUTHPW:	false,
+		DMSVRoNONCE:	false,
+		ACCELCAL:		false,
+		HWoRev:			false,
+		KEYoBRD:		false,
+		ModemSN:		false,
+		PN:				false,
+		PRODoID:		false,
+		PalmSN:			false,
+		ProdSN:			false,
+		WIFIoADDR:		false,
+		installer:		false,
+		MfgCode:		false,
+		ALSCal:			false,
+		SimLockDef:		false
 	});
 	
 	this.menuModel =
@@ -45,23 +48,11 @@ MainAssistant.prototype.setup = function()
 		
 		this.listContainer = this.controller.get('data');
 		
-		var dataTemplate = 'main/row-template';
+		this.dataTemplate = 'main/row-template';
 		this.listContainer.update('');
 		
 		this.props.each(function(pair) {
-			
-			var obj =
-			{
-				id: pair.key,
-				title: pair.key,
-				/*rowClass: (p==(this.props.length-1)?'last':''),*/
-				data: '&nbsp;'
-			};
-			
-			this.listContainer.insert({bottom: Mojo.View.render ({object: obj, template: dataTemplate})});
-			
 			this.dataRequest(pair.key);
-			
 		}, this);
 	}
 	catch (e)
@@ -102,8 +93,17 @@ MainAssistant.prototype.dataResponse = function(name, payload)
 		var type = typeof value;
 		if (type == 'object') value = Object.toJSON(value);
 		
-		this.controller.get('data-' + name).innerHTML = value;
 		this.props.set(name, value);
+		
+		var obj =
+		{
+			id: name,
+			title: name,
+			/*rowClass: (p==(this.props.length-1)?'last':''),*/
+			data: value
+		};
+		
+		this.listContainer.insert({bottom: Mojo.View.render ({object: obj, template: this.dataTemplate})});
 	}
 	catch (e)
 	{
@@ -142,9 +142,10 @@ MainAssistant.prototype.xmlGenResponse = function(value)
 		var xml = "<Section name=\"tokens\" type=\"token\" size=\"4KB\">\n";
 		
 		this.props.each(function(pair) {
-			
-			xml += "    <Val name=\""+pair.key+"\" value=\""+pair.value+"\"/>\n";
-			
+			if (pair.value !== false) {
+				v = pair.value.replace(/"/gi, '\\"');
+				xml += "    <Val name=\""+pair.key+"\" value=\""+v+"\"/>\n";
+			}
 		}, this);
 		
 		xml += "</Section>\n";
@@ -154,13 +155,12 @@ MainAssistant.prototype.xmlGenResponse = function(value)
 	else if (value == "email")
 	{
 		var xml = "&lt;Section name=\"tokens\" type=\"token\" size=\"4KB\"&gt;<br>";
-		
 		this.props.each(function(pair) {
-			
-			xml += "&nbsp;&nbsp;&nbsp;&nbsp;&lt;Val name=\""+pair.key+"\" value=\""+pair.value+"\"/&gt;<br>";
-			
+			if (pair.value !== false) {
+				v = pair.value.replace(/"/gi, '\\"');
+				xml += "&nbsp;&nbsp;&nbsp;&nbsp;&lt;Val name=\""+pair.key+"\" value=\""+v+"\"/&gt;<br>";
+			}
 		}, this);
-		
 		xml += "&lt;/Section&gt;<br>";
 		
 		this.controller.serviceRequest
