@@ -138,23 +138,32 @@ MainAssistant.prototype.handleCommand = function(event)
 };
 MainAssistant.prototype.xmlGenResponse = function(value)
 {
-	var xml = '<Section name="tokens" type="token" size="4KB">';
-	
-	this.props.each(function(pair) {
-		
-		xml += '<Val name="'+pair.key+'" value="'+pair.value+'"/>';
-		
-	}, this);
-	
-	xml += '</Section>';
-	
-	
 	if (value == "copy")
 	{
+		var xml = "<Section name=\"tokens\" type=\"token\" size=\"4KB\">\n";
+		
+		this.props.each(function(pair) {
+			
+			xml += "    <Val name=\""+pair.key+"\" value=\""+pair.value+"\"/>\n";
+			
+		}, this);
+		
+		xml += "</Section>\n";
+		
 		this.controller.stageController.setClipboard(xml);
 	}
 	else if (value == "email")
 	{
+		var xml = "&lt;Section name=\"tokens\" type=\"token\" size=\"4KB\"&gt;<br>";
+		
+		this.props.each(function(pair) {
+			
+			xml += "&nbsp;&nbsp;&nbsp;&nbsp;&lt;Val name=\""+pair.key+"\" value=\""+pair.value+"\"/&gt;<br>";
+			
+		}, this);
+		
+		xml += "&lt;/Section&gt;<br>";
+		
 		this.controller.serviceRequest
 		(
 	    	"palm://com.palm.applicationManager",
@@ -166,7 +175,7 @@ MainAssistant.prototype.xmlGenResponse = function(value)
 		            params:
 					{
 		                summary: "castle.xml",
-		                text: xml.escapeHTML()
+		                text: '<html><body>'+xml+'</body></html>'
 		            }
 		        }
 		    }
