@@ -18,3 +18,8 @@
 	background: url(../images/fade-bottom.png) bottom center repeat-x;
 	-webkit-palm-mouse-target: ignore;
 }
+
+.main .palm-row .palm-row-wrapper .label.left
+{
+	text-transform: none !important;
+}
