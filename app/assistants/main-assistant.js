@@ -1,30 +1,29 @@
 function MainAssistant()
 {
 	this.props = $H({
+		ACCELCAL:		{data: false, genComms: false},
+		ALSCal:			{data: false, genComms: false},
 		BATToCH:		{data: false, genComms: true},
 		BATToRSP:		{data: false, genComms: true},
-		BToADDR:		{data: false, genComms: true},
+		BToADDR:		{data: false, genComms: false},
 		DMCARRIER:		{data: false, genComms: true},
 		DMCLoAUTHNAME:	{data: false, genComms: true},
 		DMCLoAUTHPW:	{data: false, genComms: true},
 		DMCLoNONCE:		{data: false, genComms: true},
-		DMMODEL:		{data: false, genComms: true},
-		DMSETS:			{data: false, genComms: true},
+		DMMODEL:		{data: false, genComms: false},
+		DMSETS:			{data: false, genComms: false},
 		DMSVRoAUTHPW:	{data: false, genComms: true},
 		DMSVRoNONCE:	{data: false, genComms: true},
-		ACCELCAL:		{data: false, genComms: true},
-		HWoRev:			{data: false, genComms: true},
-		KEYoBRD:		{data: false, genComms: true},
+		HWoRev:			{data: false, genComms: false},
+		KEYoBRD:		{data: false, genComms: false},
+		MfgCode:		{data: false, genComms: false},
 		ModemSN:		{data: false, genComms: true},
-		PN:				{data: false, genComms: true},
-		PRODoID:		{data: false, genComms: true},
-		PalmSN:			{data: false, genComms: true},
-		ProdSN:			{data: false, genComms: true},
-		WIFIoADDR:		{data: false, genComms: true},
-		installer:		{data: false, genComms: true},
-		MfgCode:		{data: false, genComms: true},
-		ALSCal:			{data: false, genComms: true},
-		SimLockDef:		{data: false, genComms: true}
+		PN:				{data: false, genComms: false},
+		PRODoID:		{data: false, genComms: false},
+		PalmSN:			{data: false, genComms: false},
+		ProdSN:			{data: false, genComms: false},
+		SimLockDef:		{data: false, genComms: true},
+		WIFIoADDR:		{data: false, genComms: false}
 	});
 	
 	this.menuModel =
@@ -37,7 +36,7 @@ function MainAssistant()
 				items:
 				[
 					{
-						label: $L("Comms Board"),
+						label: $L("Comms Board Swap"),
 						command: 'do-gen-comms'
 					},
 					{
@@ -158,8 +157,12 @@ MainAssistant.prototype.xmlGenResponse = function(action, type)
 			if (pair.value.data !== false) {
 				if (type == 'do-gen-full' ||
 					(type == 'do-gen-comms' && pair.value.genComms === true)) {
-					v = pair.value.data.replace(/"/gi, '\\"');
-					xml += "    <Val name=\""+pair.key+"\" value=\""+v+"\"/>\n";
+					v = pair.value.data.replace(/"/gi, '\\"'); //');
+					xml += "    <Val name=\""+pair.key+"\" value=\""+v+"\"";
+					if (type == 'do-gen-comms') {
+						xml += " action=\"overwrite\"";
+					}
+					xml += "/>\n";
 				}
 			}
 		}, this);
@@ -186,8 +189,12 @@ MainAssistant.prototype.xmlGenResponse = function(action, type)
 			if (pair.value.data !== false) {
 				if (type == 'do-gen-full' ||
 					(type == 'do-gen-comms' && pair.value.genComms === true)) {
-					v = pair.value.data.replace(/"/gi, '\\"');
+					v = pair.value.data.replace(/"/gi, '\\"'); //');
 					xml += "&nbsp;&nbsp;&nbsp;&nbsp;&lt;Val name=\""+pair.key+"\" value=\""+v+"\"/&gt;<br>";
+					if (type == 'do-gen-comms') {
+						xml += " action=\"overwrite\"";
+					}
+					xml += "/&gt;<br>";
 				}
 			}
 		}, this);
