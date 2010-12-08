@@ -190,7 +190,7 @@ MainAssistant.prototype.xmlGenResponse = function(action, type)
 				if (type == 'do-gen-full' ||
 					(type == 'do-gen-comms' && pair.value.genComms === true)) {
 					v = pair.value.data.replace(/"/gi, '\\"'); //');
-					xml += "&nbsp;&nbsp;&nbsp;&nbsp;&lt;Val name=\""+pair.key+"\" value=\""+v+"\"/&gt;<br>";
+					xml += "&nbsp;&nbsp;&nbsp;&nbsp;&lt;Val name=\""+pair.key+"\" value=\""+v+"\"";
 					if (type == 'do-gen-comms') {
 						xml += " action=\"overwrite\"";
 					}
