@@ -14,6 +14,7 @@ function MainAssistant()
 		DMSETS:			{data: false, genComms: false},
 		DMSVRoAUTHPW:	{data: false, genComms: true},
 		DMSVRoNONCE:	{data: false, genComms: true},
+		HousingA:		{data: false, genComms: false},
 		HWoRev:			{data: false, genComms: false},
 		KEYoBRD:		{data: false, genComms: false},
 		MfgCode:		{data: false, genComms: false},
@@ -32,7 +33,7 @@ function MainAssistant()
 		items:
 		[
 			{
-				label: $L("Generate castle.xml"),
+				label: $L("Generate Tokens File"),
 				items:
 				[
 					{
@@ -133,7 +134,7 @@ MainAssistant.prototype.handleCommand = function(event)
 			
 				this.controller.showAlertDialog(
 				{
-				    title:				(event.command == 'do-gen-full' ? $L("Full castle.xml") : $L("Comms Board castle.xml")),
+				    title:				(event.command == 'do-gen-full' ? $L("Full Tokens") : $L("Comms Board Tokens")),
 					allowHTMLMessage:	true,
 				    message:			$L("What would you like to do with it?"),
 				    choices:			[
@@ -175,11 +176,11 @@ MainAssistant.prototype.xmlGenResponse = function(action, type)
 		(
 			{
 				icon: 'icon.png',
-				messageText: 'castle.xml Copied to Clipboard...',
+				messageText: 'Tokens File Copied to Clipboard...',
 				soundClass: ''
 			},
 			{},
-			'castleXmlCopy'
+			'tokensXmlCopy'
 		);
 	}
 	else if (action == "email")
@@ -210,7 +211,7 @@ MainAssistant.prototype.xmlGenResponse = function(action, type)
 		            id: "com.palm.app.email",
 		            params:
 					{
-		                summary: "castle.xml",
+		                summary: "Tokens File",
 		                text: '<html><body>'+xml+'</body></html>'
 		            }
 		        }
