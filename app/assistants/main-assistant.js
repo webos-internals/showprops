@@ -10,7 +10,7 @@ function MainAssistant()
 		DMCLoAUTHNAME:	{data: false, genComms: true},
 		DMCLoAUTHPW:	{data: false, genComms: true},
 		DMCLoNONCE:		{data: false, genComms: true},
-		DMMODEL:		{data: false, genComms: false},
+		DMMODEL:		{data: false, genComms: true},
 		DMSETS:			{data: false, genComms: false},
 		DMSVRoAUTHPW:	{data: false, genComms: true},
 		DMSVRoNONCE:	{data: false, genComms: true},
@@ -158,7 +158,7 @@ MainAssistant.prototype.xmlGenResponse = function(action, type)
 			if (pair.value.data !== false) {
 				if (type == 'do-gen-full' ||
 					(type == 'do-gen-comms' && pair.value.genComms === true)) {
-					v = pair.value.data.replace(/"/gi, '\\"'); //');
+					v = pair.value.data.replace(/"/gi, "'");                                                      //');
 					xml += "    <Val name=\""+pair.key+"\" value=\""+v+"\"";
 					if (type == 'do-gen-comms') {
 						xml += " action=\"overwrite\"";
