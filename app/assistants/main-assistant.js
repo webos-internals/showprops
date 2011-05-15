@@ -21,6 +21,7 @@ function MainAssistant()
 		ModemSN:		{data: false, genComms: true},
 		PN:				{data: false, genComms: false},
 		PRODoID:		{data: false, genComms: false},
+		PROXCAL:		{data: false, genComms: false},
 		PalmSN:			{data: false, genComms: false},
 		ProdSN:			{data: false, genComms: false},
 		SimLockDef:		{data: false, genComms: true},
