@@ -14,9 +14,12 @@ function MainAssistant()
 		DMSETS:			{data: false, genComms: false},
 		DMSVRoAUTHPW:	{data: false, genComms: true},
 		DMSVRoNONCE:	{data: false, genComms: true},
+		FlashSize:		{data: false, genComms: false},
+		GYROCAL:		{data: false, genComms: false},
 		HousingA:		{data: false, genComms: false},
 		HWoRev:			{data: false, genComms: false},
 		KEYoBRD:		{data: false, genComms: false},
+		MODEM:			{data: false, genComms: false},
 		MfgCode:		{data: false, genComms: false},
 		ModemSN:		{data: false, genComms: true},
 		PN:				{data: false, genComms: false},
@@ -24,6 +27,10 @@ function MainAssistant()
 		PROXCAL:		{data: false, genComms: false},
 		PalmSN:			{data: false, genComms: false},
 		ProdSN:			{data: false, genComms: false},
+		ProductName:	{data: false, genComms: false},
+		ProductSKU:		{data: false, genComms: false},
+		RadioType:		{data: false, genComms: false},
+		RamSize:		{data: false, genComms: false},
 		SimLockDef:		{data: false, genComms: true},
 		WIFIoADDR:		{data: false, genComms: false}
 	});
