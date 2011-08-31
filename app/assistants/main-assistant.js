@@ -1,6 +1,7 @@
 function MainAssistant()
 {
 	this.props = $H({
+		A6SN:			{data: false, genComms: false},
 		ACCELCAL:		{data: false, genComms: false},
 		ALSCal:			{data: false, genComms: false},
 		BATToCH:		{data: false, genComms: true},
@@ -26,13 +27,15 @@ function MainAssistant()
 		PRODoID:		{data: false, genComms: false},
 		PROXCAL:		{data: false, genComms: false},
 		PalmSN:			{data: false, genComms: false},
+		PixAuxSN:		{data: false, genComms: false},
 		ProdSN:			{data: false, genComms: false},
 		ProductName:	{data: false, genComms: false},
 		ProductSKU:		{data: false, genComms: false},
 		RadioType:		{data: false, genComms: false},
 		RamSize:		{data: false, genComms: false},
 		SimLockDef:		{data: false, genComms: true},
-		WIFIoADDR:		{data: false, genComms: false}
+		WIFIoADDR:		{data: false, genComms: false},
+		WIFICAL:		{data: false, genComms: false}
 	});
 	
 	this.menuModel =

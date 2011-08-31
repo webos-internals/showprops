@@ -1,8 +1,8 @@
 {
 	"title": "Show Properties",
 	"id": "com.palm.org.webosinternals.showprops",
-	"version": "0.2.5",
-	"release_date":	"26-June-2011",
+	"version": "0.3.0",
+	"release_date":	"31-August-2011",
 	"vendor": "WebOS Internals",
 	"vendor_email":	"support@webos-internals.org",
 	"vendor_url": "http://www.webos-internals.org/wiki/Application:Preware",
